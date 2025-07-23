@@ -271,29 +271,32 @@ function TaskList() {
           )}
 
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredTasks.map((task) => (
-              <div
-                key={task._id}
-                className={`rounded shadow p-4 border-l-4 transition-colors duration-200
-                  ${isOverdue(task) ? 'border-red-500 bg-red-50' :
-                    task.status === 'completed' ? 'border-green-500 bg-green-50' :
-                    'border-blue-500 bg-white'}`}
-              >
-                <h3 className="text-lg font-semibold mb-1">{task.title}</h3>
-                <p className="text-gray-600 mb-2">{task.description}</p>
-                <div className="flex justify-between items-center text-sm mb-2">
-                  <span>Due: <span className={isOverdue(task) ? 'text-red-500 font-bold' : ''}>{task.due_date ? task.due_date.substring(0, 10) : ''}</span></span>
-                  <span className={`px-2 py-1 rounded text-xs font-semibold
-                    ${isOverdue(task) ? 'bg-red-100 text-red-700' :
-                      task.status === 'completed' ? 'bg-green-100 text-green-700' :
-                      'bg-blue-100 text-blue-700'}`}>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
+            {filteredTasks.map((task) => {
+              const overdue = isOverdue(task);
+              return (
+                <div
+                  key={task._id}
+                  className={`rounded shadow p-4 border-l-4 transition-colors duration-200
+                    ${overdue ? 'border-red-500 bg-red-50' :
+                      task.status === 'completed' ? 'border-green-500 bg-green-50' :
+                      'border-blue-500 bg-white'}`}
+                >
+                  <h3 className="text-lg font-semibold mb-1">{task.title}</h3>
+                  <p className="text-gray-600 mb-2">{task.description}</p>
+                  <div className="flex justify-between items-center text-sm mb-2">
+                    <span>Due: <span className={overdue ? 'text-red-500 font-bold' : ''}>{task.due_date ? task.due_date.substring(0, 10) : ''}</span></span>
+                    <span className={`px-2 py-1 rounded text-xs font-semibold
+                      ${overdue ? 'bg-red-100 text-red-700' :
+                        task.status === 'completed' ? 'bg-green-100 text-green-700' :
+                        'bg-blue-100 text-blue-700'}`}>{task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <button className="text-blue-500 hover:underline text-sm" onClick={() => handleEdit(task)}>Edit</button>
+                    <button className="text-red-500 hover:underline text-sm" onClick={() => handleDelete(task._id)}>Delete</button>
+                  </div>
                 </div>
-                <div className="flex gap-2 mt-2">
-                  <button className="text-blue-500 hover:underline text-sm" onClick={() => handleEdit(task)}>Edit</button>
-                  <button className="text-red-500 hover:underline text-sm" onClick={() => handleDelete(task._id)}>Delete</button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
